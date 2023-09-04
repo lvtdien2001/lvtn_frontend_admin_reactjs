@@ -1,0 +1,16 @@
+.nav {
+    background-color: var(--bs-blue);
+}
+
+.text-link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.logout-btn {
+    color: #fff;
+
+    &:hover {
+        color: var(--bs-red);
+    }
+}
