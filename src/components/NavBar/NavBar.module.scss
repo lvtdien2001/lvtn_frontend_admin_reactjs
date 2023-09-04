@@ -1,5 +1,9 @@
 .nav {
     background-color: var(--bs-blue);
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    z-index: 10000;
 }
 
 .text-link {
