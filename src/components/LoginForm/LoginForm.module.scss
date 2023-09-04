@@ -1,0 +1,30 @@
+.wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../assets/images/landing.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.label {
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--bs-blue);
+    height: 100%;
+}
+
+.form {
+    border: solid 1px #333;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: hsla(45, 33%, 98%, 0.733);
+
+}
+
+.text-invalid {
+    color: var(--bs-red);
+    font-size: 16px;
+}
