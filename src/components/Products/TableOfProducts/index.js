@@ -6,14 +6,22 @@ import axios from 'axios';
 
 const TableOfProducts = ({ setMessage }) => {
     const [products, setProducts] = useState([]);
+    const [brands, setBrands] = useState([]);
     const [page, setPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
     const [loading, setLoading] = useState(true);
-
+    const [filterData, setFilterData] = useState({});
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/product?page=${page}`);
+                let query = '';
+                if (filterData.brand) query += `&brand=${filterData.brand}`;
+                if (filterData.styleCode) query += `&styleCode=${filterData.styleCode}`;
+                if (filterData.strapCode) query += `&strapCode=${filterData.strapCode}`;
+                if (filterData.glassCode) query += `&glassCode=${filterData.glassCode}`;
+                if (filterData.systemCode) query += `&systemCode=${filterData.systemCode}`;
+
+                const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/product?page=${page}${query}`);
                 if (rsp.data.success) {
                     setProducts(rsp.data.products);
                     setPage(rsp.data.pagination.currentPage);
@@ -24,7 +32,17 @@ const TableOfProducts = ({ setMessage }) => {
             }
         }
         fetchApi();
-    }, [page])
+    }, [page, filterData])
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/brand`);
+            if (rsp.data.success) {
+                setBrands(rsp.data.brands)
+            }
+        }
+        fetchApi();
+    }, [])
 
     let body = (
         !loading && products.map((product, index) => {
@@ -43,7 +61,7 @@ const TableOfProducts = ({ setMessage }) => {
                         - Bộ máy: {product.system?.name} <br />
                     </td>
                     <td style={{ minWidth: '100px' }} className="text-center">
-                        <UpdateProductModal setProducts={setProducts} setMessage={setMessage} product={product} />
+                        <UpdateProductModal brands={brands} setProducts={setProducts} setMessage={setMessage} product={product} />
                         <DeleteProductModal setProducts={setProducts} setMessage={setMessage} productId={product._id} />
                     </td>
                 </tr>
@@ -53,8 +71,8 @@ const TableOfProducts = ({ setMessage }) => {
 
     return (
         <>
-            <FilterProduct setProducts={setProducts} />
-            <AddProductModal setProducts={setProducts} setMessage={setMessage} />
+            <FilterProduct brands={brands} setFilterData={setFilterData} setPage={setPage} />
+            <AddProductModal brands={brands} setProducts={setProducts} setMessage={setMessage} />
             {!loading && <>
                 <Table size="sm" responsive bordered hover>
                     <thead>
@@ -71,7 +89,7 @@ const TableOfProducts = ({ setMessage }) => {
                         {body}
                     </tbody>
                 </Table>
-                <Pagination page={page} lastPage={lastPage} setPage={setPage} />
+                {lastPage > 1 && <Pagination page={page} lastPage={lastPage} setPage={setPage} />}
             </>}
         </>
     );

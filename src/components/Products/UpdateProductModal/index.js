@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { BsPencilSquare } from 'react-icons/bs';
 import axios from 'axios';
@@ -7,9 +7,8 @@ import styles from './UpdateProductModal.module.scss';
 
 const cx = classNames.bind(styles);
 
-function UpdateProductModal({ product, setProducts, setMessage }) {
+function UpdateProductModal({ product, setProducts, setMessage, brands }) {
     const [show, setShow] = useState(false);
-    const [brands, setBrands] = useState([]);
     const [file, setFile] = useState({});
     const [imgDemoUrl, setImgDemoUrl] = useState(product?.image?.url);
     const [submitData, setSubmitData] = useState({
@@ -98,17 +97,6 @@ function UpdateProductModal({ product, setProducts, setMessage }) {
         }
     }
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/brand`);
-            if (rsp.data.success) {
-                setBrands(rsp.data.brands)
-            }
-        }
-
-        fetchApi();
-    }, [])
-
     let body = (
         <Form onSubmit={e => handleSubmit(e)}>
             <Row>
@@ -135,14 +123,11 @@ function UpdateProductModal({ product, setProducts, setMessage }) {
                         <Form.Select
                             name='brandId'
                             onChange={e => handleChangeData(e)}
+                            defaultValue={submitData.brandId}
                         >
                             {brands.map(brand => {
-                                let selected = false;
-                                if (brand._id === product?.brand._id) {
-                                    selected = true;
-                                }
                                 return (
-                                    <option selected={selected} key={brand._id} value={brand._id}>{brand.name}</option>
+                                    <option key={brand._id} value={brand._id}>{brand.name}</option>
                                 )
                             })}
                         </Form.Select>

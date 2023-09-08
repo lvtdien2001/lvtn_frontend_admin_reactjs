@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Accordion, Button, Table } from 'react-bootstrap';
 import { FaFilter } from 'react-icons/fa';
 import classNames from 'classnames/bind';
 import styles from './FilterProduct.module.scss';
-import axios from 'axios';
 import CustomToggle from './CustomToggle';
 
 const cx = classNames.bind(styles);
 
-const FilterProduct = ({ setProducts }) => {
-    const [brands, setBrands] = useState([]);
+const FilterProduct = ({ setFilterData, brands, setPage }) => {
     const [data, setData] = useState({
-        brand: '', style: '', strap: '', glass: '', system: ''
+        brand: '', styleCode: '', strapCode: '', glassCode: '', systemCode: ''
     })
 
     const handleChange = (e) => {
@@ -24,27 +22,20 @@ const FilterProduct = ({ setProducts }) => {
     }
 
     const handleFilter = () => {
-
+        setFilterData({
+            brand: data.brand,
+            styleCode: data.styleCode,
+            strapCode: data.strapCode,
+            glassCode: data.glassCode,
+            systemCode: data.systemCode
+        });
+        setPage(1);
     }
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            try {
-                const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/brand`);
-                if (rsp.data.success) {
-                    setBrands(rsp.data.brands);
-                }
-            } catch (error) {
-                console.log(error.response?.message);
-            }
-        }
-        fetchApi();
-    }, [])
 
     let body = (
         <thead>
             <tr>
-                <th>
+                <th style={{ width: '150px' }}>
                     <label>Thương hiệu:</label>
                     <select
                         id='brand'
@@ -52,23 +43,23 @@ const FilterProduct = ({ setProducts }) => {
                         value={data.brand}
                         onChange={e => handleChange(e)}
                     >
-                        <option hidden value="">-- Chọn thương hiệu --</option>
-                        {brands.map(brand => {
+                        <option value="">Tất cả</option>
+                        {brands && brands.map(brand => {
                             return (
                                 <option key={brand._id} value={brand._id}>{brand.name}</option>
                             )
                         })}
                     </select>
                 </th>
-                <th>
+                <th style={{ width: '150px' }}>
                     <label> Dòng sản phẩm:</label>
                     <select
-                        id='style'
+                        id='styleCode'
                         className={`${cx('input')} ms-1`}
-                        value={data.style}
+                        value={data.styleCode}
                         onChange={e => handleChange(e)}
                     >
-                        <option hidden value="">-- Chọn dòng sản phẩm --</option>
+                        <option value="">Tất cả</option>
                         <option value="01">Thời trang</option>
                         <option value="02">Hiện đại</option>
                         <option value="03">Sang trọng</option>
@@ -76,52 +67,47 @@ const FilterProduct = ({ setProducts }) => {
                         <option value="05">Quân đội</option>
                     </select>
                 </th>
-                <th>
+                <th style={{ width: '150px' }}>
                     <label> Dây đeo:</label>
                     <select
-                        id='strap'
+                        id='strapCode'
                         className={`${cx('input')} ms-1`}
-                        value={data.strap}
+                        value={data.strapCode}
                         onChange={e => handleChange(e)}
                     >
-                        <option hidden value="">-- Chọn dây đeo --</option>
-                        <option value="01">Thời trang</option>
-                        <option value="02">Hiện đại</option>
-                        <option value="03">Sang trọng</option>
-                        <option value="04">Thể thao</option>
-                        <option value="05">Quân đội</option>
+                        <option value="">Tất cả</option>
+                        <option value="01">Dây da</option>
+                        <option value="02">Dây kim loại</option>
+                        <option value="03">Dây cao su</option>
+                        <option value="04">Dây vải</option>
                     </select>
                 </th>
-                <th>
+                <th style={{ width: '150px' }}>
                     <label> Mặt kính:</label>
                     <select
-                        id='glass'
+                        id='glassCode'
                         className={`${cx('input')} ms-1`}
-                        value={data.glass}
+                        value={data.glassCode}
                         onChange={e => handleChange(e)}
                     >
-                        <option hidden value="">-- Chọn mặt kính --</option>
-                        <option value="01">Thời trang</option>
-                        <option value="02">Hiện đại</option>
-                        <option value="03">Sang trọng</option>
-                        <option value="04">Thể thao</option>
-                        <option value="05">Quân đội</option>
+                        <option value="">Tất cả</option>
+                        <option value="01">Kính khoáng Mineral (Kính cứng)</option>
+                        <option value="02">Sapphire (Kính chống trầy)</option>
+                        <option value="03">Resin Glass (Kính nhựa)</option>
                     </select>
                 </th>
-                <th>
+                <th style={{ width: '150px' }}>
                     <label> Bộ máy:</label>
                     <select
-                        id='system'
+                        id='systemCode'
                         className={`${cx('input')} ms-1`}
-                        value={data.system}
+                        value={data.systemCode}
                         onChange={e => handleChange(e)}
                     >
-                        <option hidden value="">-- Chọn bộ máy --</option>
-                        <option value="01">Thời trang</option>
-                        <option value="02">Hiện đại</option>
-                        <option value="03">Sang trọng</option>
-                        <option value="04">Thể thao</option>
-                        <option value="05">Quân đội</option>
+                        <option value="">Tất cả</option>
+                        <option value="01">Cơ tự động (Automatic)</option>
+                        <option value="02">Quartz (Pin)</option>
+                        <option value="03">Eco-Drive (Năng lượng ánh sáng)</option>
                     </select>
                 </th>
                 <th>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import axios from 'axios';
@@ -6,9 +6,8 @@ import styles from './AddProductModal.module.scss';
 
 const cx = classNames.bind(styles);
 
-const AddProductModal = ({ setProducts, setMessage }) => {
+const AddProductModal = ({ setProducts, setMessage, brands }) => {
     const [show, setShow] = useState(false);
-    const [brands, setBrands] = useState([]);
     const [file, setFile] = useState({});
     const [imgDemoUrl, setImgDemoUrl] = useState('');
 
@@ -95,17 +94,6 @@ const AddProductModal = ({ setProducts, setMessage }) => {
         }
     }
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/brand`);
-            if (rsp.data.success) {
-                setBrands(rsp.data.brands)
-            }
-        }
-
-        fetchApi();
-    }, [])
-
     let body = (
         <Form onSubmit={(e) => handleSubmit(e)}>
             <Row>
@@ -136,7 +124,7 @@ const AddProductModal = ({ setProducts, setMessage }) => {
                             isInvalid={isInvalid.brand}
                         >
                             <option hidden>-- Chọn thương hiệu --</option>
-                            {brands.map(brand => {
+                            {brands && brands.map(brand => {
                                 return (
                                     <option key={brand._id} value={brand._id}>{brand.name}</option>
                                 )
