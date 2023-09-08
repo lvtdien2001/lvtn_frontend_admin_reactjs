@@ -1,7 +1,11 @@
 .nav {
     background-color: var(--bs-blue);
-    position: fixed;
     width: 100%;
+    height: 38px;
+}
+
+.nav-fixed {
+    position: fixed;
     top: 0px;
     z-index: 10000;
 }

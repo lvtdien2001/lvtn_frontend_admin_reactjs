@@ -4,14 +4,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import GlobalStyle from './components/GlobalStyle';
-import { AuthProvider } from './contexts';
+import { AuthProvider, ModalProvider } from './contexts';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <GlobalStyle>
             <AuthProvider>
-                <App />
+                <ModalProvider>
+                    <App />
+                </ModalProvider>
             </AuthProvider>
         </GlobalStyle>
     </React.StrictMode>

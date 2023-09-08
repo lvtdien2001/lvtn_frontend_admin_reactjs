@@ -2,15 +2,9 @@
     position: fixed;
     align-items: center;
     justify-content: center;
-    top: 10px;
-    // right: 10px;
-    // max-width: 95vw;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 95vw;
     z-index: 10000;
 }
-
-// @media (min-width:320px) and (max-width:420px) {
-//     .position {
-//         top: 20px;
-//         right: 0;
-//     }
-// }
