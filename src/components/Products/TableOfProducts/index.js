@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import { AddProductModal, DeleteProductModal, UpdateProductModal, FilterProduct } from '..'
+import { AddProductModal, DeleteProductModal, UpdateProductModal, FilterProduct } from '..';
+import { Pagination } from '../..';
 import axios from 'axios';
 
 const TableOfProducts = ({ setMessage }) => {
     const [products, setProducts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/product`);
+                const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/product?page=${page}`);
                 if (rsp.data.success) {
                     setProducts(rsp.data.products);
+                    setPage(rsp.data.pagination.currentPage);
+                    setLastPage(rsp.data.pagination.lastPage);
                     setLoading(false);
                 }
             } catch (error) {
             }
         }
         fetchApi();
-    }, [])
+    }, [page])
 
     let body = (
         !loading && products.map((product, index) => {
@@ -50,21 +55,24 @@ const TableOfProducts = ({ setMessage }) => {
         <>
             <FilterProduct setProducts={setProducts} />
             <AddProductModal setProducts={setProducts} setMessage={setMessage} />
-            {!loading && <Table size="sm" responsive bordered hover>
-                <thead>
-                    <tr className="text-center">
-                        <th>STT</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Hình ảnh</th>
-                        <th>Thương hiệu</th>
-                        <th>Thông số kỹ thuật</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {body}
-                </tbody>
-            </Table>}
+            {!loading && <>
+                <Table size="sm" responsive bordered hover>
+                    <thead>
+                        <tr className="text-center">
+                            <th>STT</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th>Thương hiệu</th>
+                            <th>Thông số kỹ thuật</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {body}
+                    </tbody>
+                </Table>
+                <Pagination page={page} lastPage={lastPage} setPage={setPage} />
+            </>}
         </>
     );
 }
