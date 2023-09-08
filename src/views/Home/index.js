@@ -1,9 +1,9 @@
-import { NavBar } from '../../components';
+import { Navigate } from 'react-router-dom';
 
 const Home = () => {
     return (
         <>
-            <NavBar />
+            <Navigate to='/product' />
         </>
     )
 }

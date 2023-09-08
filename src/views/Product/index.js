@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavBar, TabBar, Message } from '../../components';
-import { TableOfProducts, TableOfBrands } from '../../components/Products'
+import { TableOfProducts } from '../../components/Products';
+import { TableOfBrands } from '../../components/Brands';
 
 const Product = () => {
     const [message, setMessage] = useState({
