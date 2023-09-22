@@ -7,6 +7,19 @@ const TabBar = ({ tabs, setMessage }) => {
      *      component: <Home />
      *  }] 
      * */
+
+    const formatPrice = input => {
+        const price = String(input);
+        if (price.length <= 3) {
+            return price + ' đ';
+        }
+        let priceFormat = [];
+        for (let i = price.length; i > 0; i -= 3) {
+            priceFormat.push(price.substring(i - 3, i));
+        }
+        return priceFormat.reverse().join('.') + ' đ';
+    }
+
     return (
         <Row className='justify-content-center'>
             <Col lg={10}>
@@ -19,7 +32,7 @@ const TabBar = ({ tabs, setMessage }) => {
                         return (
                             <Tab key={tab.key} eventKey={tab.key} title={tab.title}>
                                 <h3 className='text-center mt-3 mb-3'>{tab.title?.toUpperCase()}</h3>
-                                <Component setMessage={setMessage} />
+                                <Component formatPrice={formatPrice} setMessage={setMessage} />
                             </Tab>
                         )
                     })}
