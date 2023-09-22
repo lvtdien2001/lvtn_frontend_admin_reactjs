@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
-import { BsPencilSquare } from 'react-icons/bs';
 
-const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
+const AddSupplierModal = ({ setMessage, setSuppliers }) => {
     const [show, setShow] = useState(false);
-    const [name, setName] = useState(supplier.name);
-    const [address, setAddress] = useState(supplier.address);
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
     const [isInvalid, setIsInvalid] = useState({ name: false, address: false });
 
     const resetData = () => {
-        setName(supplier.name);
-        setAddress(supplier.address);
+        setName('');
+        setAddress('');
         setIsInvalid({ name: false, address: false });
     }
 
@@ -33,23 +32,17 @@ const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
         } else {
             const submitData = { name, address }
             try {
-                const rsp = await axios.put(`${process.env.REACT_APP_API_URL}/supplier/${supplier._id}`, submitData);
+                const rsp = await axios.post(`${process.env.REACT_APP_API_URL}/supplier`, submitData);
                 if (rsp.data.success) {
-                    supplier = rsp.data.updatedSupplier;
                     setSuppliers(prev => {
-                        let suppliers = prev;
-                        for (let i = 0; i < suppliers.length; i++) {
-                            if (suppliers[i]._id === supplier._id) {
-                                suppliers[i] = rsp.data.updatedSupplier;
-                            }
-                        }
-                        return suppliers;
+                        return [...prev, rsp.data.newSupplier]
                     });
                     handleClose();
                     setMessage({
                         type: 'success',
                         content: rsp.data.msg
                     });
+                    resetData();
                 }
 
             } catch (error) {
@@ -97,8 +90,8 @@ const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
 
     return (
         <>
-            <Button className='mb-1' variant="outline-success" onClick={handleShow}>
-                <BsPencilSquare />
+            <Button className='mb-1' variant="outline-primary" onClick={handleShow}>
+                Thêm nhà cung cấp
             </Button>
 
             <Modal
@@ -109,7 +102,7 @@ const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
                 scrollable
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Cập nhật thông tin nhà cung cấp</Modal.Title>
+                    <Modal.Title>Thêm nhà cung cấp mới</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {body}
@@ -119,7 +112,7 @@ const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
                         Hủy
                     </Button>
                     <Button type='button' variant="outline-success" onClick={handleSubmit}>
-                        Lưu
+                        Gửi
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -127,4 +120,4 @@ const UpdateSupplierModal = ({ setMessage, setSuppliers, supplier }) => {
     );
 }
 
-export default UpdateSupplierModal
+export default AddSupplierModal
