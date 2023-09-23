@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { NavBar, TabBar, Message } from '../../components';
-import { TableOfGoodsReceivedNotes, TableOfSuppliers } from '../../components/Warehouse';
-import { TableOfBrands } from '../../components/Brands';
+import { TableOfGoodsReceivedNotes, TableOfSuppliers, TableOfInventories } from '../../components/Warehouse';
 
 const Warehouse = () => {
     const [message, setMessage] = useState({
@@ -15,8 +14,8 @@ const Warehouse = () => {
         },
         {
             key: 'inventory',
-            title: 'Hàng tồn kho',
-            component: TableOfBrands
+            title: 'Hàng tồn kho và Đơn giá',
+            component: TableOfInventories
         },
         {
             key: 'supplier',
