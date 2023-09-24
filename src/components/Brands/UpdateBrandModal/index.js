@@ -85,7 +85,7 @@ function UpdateBrandModal({ setMessage, brand, setBrands }) {
                     onChange={e => handleChangeFile(e.target.files[0])}
                 />
                 <div className={`text-center ${cx('demo-img')}`}>
-                    <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='90px' height='90px' />
+                    <img className='mt-4' src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='225px' height='50px' />
                 </div>
             </Form.Group>
         </Form>

@@ -16,6 +16,13 @@ const AddBrandModal = ({ setBrands, setMessage }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const resetData = () => {
+        setName('');
+        setFile({});
+        setImgDemoUrl('');
+        setIsInvalid({ name: false, logo: false });
+    }
+
     const handleChangeFile = (file) => {
         if (file) {
             let value = URL.createObjectURL(file);
@@ -30,7 +37,7 @@ const AddBrandModal = ({ setBrands, setMessage }) => {
         if (e) {
             e.preventDefault();
         }
-        if (name.length >= 5 && file.name) {
+        if (name.length >= 3 && file.name) {
             setShow(false);
             const formData = new FormData();
             formData.append('name', name);
@@ -41,11 +48,12 @@ const AddBrandModal = ({ setBrands, setMessage }) => {
                     content: rsp.data.msg,
                     type: 'success'
                 });
-                setBrands(prev => [rsp.data.newBrand, ...prev])
+                setBrands(prev => [...prev, rsp.data.newBrand])
             }
+            resetData();
         } else {
             setIsInvalid({
-                name: name.length < 5 ? true : false,
+                name: name.length < 3 ? true : false,
                 logo: !file.name ? true : false
             })
         }
@@ -64,7 +72,7 @@ const AddBrandModal = ({ setBrands, setMessage }) => {
                     isInvalid={isInvalid.name}
                 />
                 <Form.Control.Feedback type="invalid">
-                    Tên sản phẩm phải có ít nhất 10 ký tự!
+                    Tên thương hiệu phải có ít nhất 3 ký tự!
                 </Form.Control.Feedback>
             </Form.Group>
 
@@ -79,7 +87,7 @@ const AddBrandModal = ({ setBrands, setMessage }) => {
                     Bạn chưa chọn hình ảnh!
                 </Form.Control.Feedback>
                 <div className={`text-center ${cx('demo-img')}`}>
-                    <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='90px' height='90px' />
+                    <img className='mt-4' src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='225px' height='50px' />
                 </div>
             </Form.Group>
         </Form>

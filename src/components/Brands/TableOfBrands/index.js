@@ -23,9 +23,9 @@ const TableOfBrands = ({ setMessage }) => {
             return (
                 <tr key={index}>
                     <td className='text-center'>{index + 1}</td>
-                    <td>{brand.name}</td>
+                    <td className='text-center'>{brand.name}</td>
                     <td className='text-center'>
-                        <img src={brand.logo.url} alt="Hinh anh thuong hieu" width='70px' height='70px' />
+                        <img src={brand.logo.url} alt="Hinh anh thuong hieu" height='45px' width='200px' />
                     </td>
                     <td className='text-center'>
                         <UpdateBrandModal brand={brand} setMessage={setMessage} setBrands={setBrands} />
