@@ -30,12 +30,12 @@ const TableOfGoodsReceivedNote = ({ setMessage, formatPrice }) => {
                 <tr key={index}>
                     <td className="text-center">{index + 1}</td>
                     <td className='text-center'>{moment(note.createdAt).format('llll')}</td>
-                    <td className='text-center'>{formatPrice(note.totalAmount)}</td>
+                    <td className='text-center'><b className='text-danger'>{formatPrice(note.totalAmount)}</b></td>
                     <td className='text-center'>
                         {note.products?.length}
                     </td>
                     <td style={{ minWidth: '100px' }} className="text-center">
-
+                        Xem chi tiết
                     </td>
                 </tr>
             )

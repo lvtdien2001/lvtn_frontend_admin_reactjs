@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Row, Col } from 'react-bootstrap';
 import { AddProductModal, DeleteProductModal, UpdateProductModal, FilterProduct } from '..';
 import { Pagination } from '../..';
 import axios from 'axios';
@@ -13,6 +13,7 @@ const TableOfProducts = ({ setMessage }) => {
     const [filterData, setFilterData] = useState({});
     useEffect(() => {
         const fetchApi = async () => {
+            setLoading(true);
             try {
                 let query = '';
                 if (filterData.brand) query += `&brand=${filterData.brand}`;
@@ -24,7 +25,6 @@ const TableOfProducts = ({ setMessage }) => {
                 const rsp = await axios.get(`${process.env.REACT_APP_API_URL}/product?page=${page}${query}`);
                 if (rsp.data.success) {
                     setProducts(rsp.data.products);
-                    setPage(rsp.data.pagination.currentPage);
                     setLastPage(rsp.data.pagination.lastPage);
                     setLoading(false);
                 }
@@ -48,12 +48,13 @@ const TableOfProducts = ({ setMessage }) => {
         !loading && products.map((product, index) => {
             return (
                 <tr key={index}>
-                    <td className="text-center">{index + 1}</td>
+                    <td className="text-center">{(page - 1) * 10 + index + 1}</td>
                     <td style={{ maxWidth: '450px' }}>{product.name}</td>
                     <td className="text-center">
-                        <img src={product.image?.url} alt='Hinh anh san pham' width='100px' height='100px' />
+                        <img src={product.image?.url} alt='Hinh anh san pham' width='80px' height='80px' />
                     </td>
-                    <td>{product.brand?.name}</td>
+                    <td className='text-center'>{product.gender === 0 ? 'Nam/Nữ' : (product.gender === 1 ? 'Nam' : 'Nữ')}</td>
+                    <td className='text-center'>{product.brand?.name}</td>
                     <td style={{ minWidth: '200px' }}>
                         - Dòng sản phẩm: {product.style?.name} <br />
                         - Dây đeo: {product.strap?.name} <br />
@@ -72,7 +73,14 @@ const TableOfProducts = ({ setMessage }) => {
     return (
         <>
             <FilterProduct brands={brands} setFilterData={setFilterData} setPage={setPage} />
-            <AddProductModal brands={brands} setProducts={setProducts} setMessage={setMessage} />
+            <Row className='justify-content-between'>
+                <Col lg={6} xs={12}>
+                    <AddProductModal brands={brands} setProducts={setProducts} setMessage={setMessage} />
+                </Col>
+                <Col>
+                    {lastPage > 1 && <Pagination page={page} lastPage={lastPage} setPage={setPage} align='justify-content-end' />}
+                </Col>
+            </Row>
             {!loading && <>
                 <Table size="sm" responsive bordered hover>
                     <thead>
@@ -80,6 +88,7 @@ const TableOfProducts = ({ setMessage }) => {
                             <th>STT</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
+                            <th>Giới tính</th>
                             <th>Thương hiệu</th>
                             <th>Thông số kỹ thuật</th>
                             <th></th>
@@ -89,7 +98,6 @@ const TableOfProducts = ({ setMessage }) => {
                         {body}
                     </tbody>
                 </Table>
-                {lastPage > 1 && <Pagination page={page} lastPage={lastPage} setPage={setPage} />}
             </>}
         </>
     );

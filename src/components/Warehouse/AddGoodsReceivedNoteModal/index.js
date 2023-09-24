@@ -206,7 +206,7 @@ const AddGoodsReceivedNoteModal = ({ setMessage, formatPrice, setNotes }) => {
                                     <td>{(suppliers.find(supplier => supplier._id === productSelected.supplier))?.name}</td>
                                     <td className='text-center text-danger'><b>{formatPrice(productSelected.price)}</b></td>
                                     <td className='text-center'>{productSelected.quantity}</td>
-                                    <td>
+                                    <td className='text-center'>
                                         <Button variant='outline-danger' onClick={() => handleRemoveProduct(index)}>
                                             <BsFillTrashFill />
                                         </Button>

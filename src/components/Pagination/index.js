@@ -1,6 +1,6 @@
 import { Pagination } from 'react-bootstrap';
 
-function PaginationApp({ page, lastPage, setPage }) {
+function PaginationApp({ page, lastPage, setPage, align }) {
     let body = [];
     for (let i = 1; i <= lastPage; i++) {
         body.push(
@@ -15,7 +15,7 @@ function PaginationApp({ page, lastPage, setPage }) {
     }
 
     return (
-        <Pagination className='justify-content-center'>
+        <Pagination className={align}>
             <Pagination.Item
                 disabled={Number(page) === 1}
                 onClick={() => setPage(1)}
@@ -30,7 +30,7 @@ function PaginationApp({ page, lastPage, setPage }) {
             {body.map(e => e)}
 
             <Pagination.Next
-                onClick={() => setPage(prev => prev - 1)}
+                onClick={() => setPage(prev => Number(prev) + 1)}
                 disabled={Number(page) === Number(lastPage)}
             />
             <Pagination.Item

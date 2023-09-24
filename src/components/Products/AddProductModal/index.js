@@ -15,11 +15,22 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
         name: false, brand: false, image: false, style: false, strap: false, glass: false, system: false
     });
     const [submitData, setSubmitData] = useState({
-        name: '', brandId: '', styleCode: '', strapCode: '', glassCode: '', systemCode: '', description: '',
+        name: '', brandId: '', styleCode: '', strapCode: '', glassCode: '', systemCode: '', description: '', gender: 0
     });
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const resetData = () => {
+        setFile({});
+        setImgDemoUrl('');
+        setIsInvalid({
+            name: false, brand: false, image: false, style: false, strap: false, glass: false, system: false
+        });
+        setSubmitData({
+            name: '', brandId: '', styleCode: '', strapCode: '', glassCode: '', systemCode: '', description: '', gender: 0
+        });
+    }
 
     const handleChangeData = (e) => {
         setSubmitData({
@@ -42,21 +53,22 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
         if (e) {
             e.preventDefault();
         }
-        const { name, brandId, styleCode, strapCode, glassCode, systemCode } = submitData;
+        const { name, brandId, styleCode, strapCode, glassCode, systemCode, gender, description } = submitData;
 
         const isValid = !(name.length < 10 || brandId === '' || styleCode === '' || strapCode === '' || glassCode === '' || systemCode === '' || !file.name);
         // send request
         if (isValid) {
             setShow(false);
             const formData = new FormData();
-            formData.append('name', submitData.name);
-            formData.append('brandId', submitData.brandId);
+            formData.append('name', name);
+            formData.append('brandId', brandId);
             formData.append('image', file);
-            formData.append('styleCode', submitData.styleCode);
-            formData.append('strapCode', submitData.strapCode);
-            formData.append('glassCode', submitData.glassCode);
-            formData.append('systemCode', submitData.systemCode);
-            formData.append('description', submitData.description);
+            formData.append('styleCode', styleCode);
+            formData.append('strapCode', strapCode);
+            formData.append('glassCode', glassCode);
+            formData.append('systemCode', systemCode);
+            formData.append('description', description);
+            formData.append('gender', gender);
             try {
                 const rsp = await axios.post(`${process.env.REACT_APP_API_URL}/product`, formData);
                 if (rsp.data.success) {
@@ -64,21 +76,15 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
                         type: 'success',
                         content: rsp.data.msg
                     });
-                    setProducts(prev => [rsp.data.newProduct, ...prev])
+                    setProducts(prev => [...prev, rsp.data.newProduct])
                 }
             } catch (error) {
-                if (error.response) {
-                    setMessage({
-                        type: 'danger',
-                        content: error.response.msg
-                    })
-                } else {
-                    setMessage({
-                        type: 'danger',
-                        content: error.message
-                    })
-                }
+                setMessage({
+                    type: 'danger',
+                    content: error.response?.data.msg || error.message
+                })
             }
+            resetData();
         } else {
             // validate form
             setIsInvalid({
@@ -139,6 +145,34 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
             <Row>
                 <Col lg={6}>
                     <Form.Group className="mb-3">
+                        <Form.Label><b>Giới tính</b></Form.Label>
+                        <div>
+                            <Form.Check
+                                type='radio'
+                                label='Cả hai'
+                                name='gender'
+                                inline
+                                defaultChecked
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 0 } })}
+                            />
+                            <Form.Check
+                                type='radio'
+                                label='Nam'
+                                name='gender'
+                                inline
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 1 } })}
+                            />
+                            <Form.Check
+                                type='radio'
+                                label='Nữ'
+                                name='gender'
+                                inline
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 2 } })}
+                            />
+                        </div>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
                         <Form.Label><b>Hình ảnh</b></Form.Label>
                         <Form.Control
                             type='file'
@@ -149,7 +183,7 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
                             Bạn chưa chọn hình ảnh!
                         </Form.Control.Feedback>
                         <div className={`text-center ${cx('demo-img')}`}>
-                            <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='70%' height='100%' />
+                            <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='130px' height='130px' />
                         </div>
                     </Form.Group>
                 </Col>

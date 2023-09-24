@@ -19,6 +19,7 @@ function UpdateProductModal({ product, setProducts, setMessage, brands }) {
         glassCode: product?.glass.code,
         systemCode: product?.system.code,
         description: product?.description,
+        gender: product?.gender
     });
     const [isInvalid, setIsInvalid] = useState(false)
 
@@ -58,6 +59,7 @@ function UpdateProductModal({ product, setProducts, setMessage, brands }) {
             formData.append('glassCode', submitData.glassCode);
             formData.append('systemCode', submitData.systemCode);
             formData.append('description', submitData.description);
+            formData.append('gender', submitData.gender);
             file?.name && formData.append('image', file);
             try {
                 const rsp = await axios.put(`${process.env.REACT_APP_API_URL}/product/${product._id}`, formData);
@@ -137,13 +139,42 @@ function UpdateProductModal({ product, setProducts, setMessage, brands }) {
             <Row>
                 <Col lg={6}>
                     <Form.Group className="mb-3">
+                        <Form.Label><b>Giới tính</b></Form.Label>
+                        <div>
+                            <Form.Check
+                                type='radio'
+                                label='Cả hai'
+                                name='gender'
+                                inline
+                                defaultChecked={submitData.gender === 0}
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 0 } })}
+                            />
+                            <Form.Check
+                                type='radio'
+                                label='Nam'
+                                name='gender'
+                                inline
+                                defaultChecked={submitData.gender === 1}
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 1 } })}
+                            />
+                            <Form.Check
+                                type='radio'
+                                label='Nữ'
+                                name='gender'
+                                inline
+                                defaultChecked={submitData.gender === 2}
+                                onChange={() => setSubmitData(prev => { return { ...prev, gender: 2 } })}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
                         <Form.Label><b>Hình ảnh</b></Form.Label>
                         <Form.Control
                             type='file'
                             onChange={e => handleChangeFile(e)}
                         />
                         <div className={`text-center ${cx('demo-img')}`}>
-                            <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='70%' height='100%' />
+                            <img src={imgDemoUrl} alt="Không tìm thấy hình ảnh" width='130px' height='130px' />
                         </div>
                     </Form.Group>
                 </Col>

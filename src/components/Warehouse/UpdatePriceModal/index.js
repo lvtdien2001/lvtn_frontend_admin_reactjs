@@ -5,10 +5,10 @@ import { BsPencilSquare } from 'react-icons/bs';
 import moment from 'moment';
 import 'moment/locale/vi';
 
-const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index }) => {
+const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index, page }) => {
     const [show, setShow] = useState(false);
-    const [price, setPrice] = useState(product.price);
     const [prices, setPrices] = useState([]);
+    const [price, setPrice] = useState(product.price);
     const [receivedNotes, setReceivedNotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isInvalid, setIsInvalid] = useState(false);
@@ -64,7 +64,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
         }
         getPrices();
         getReceivedNotes();
-    }, [])
+    }, [page])
 
     let history = (
         <Table size="sm" responsive bordered hover>
@@ -125,7 +125,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
                 <Col>
                     <Form onSubmit={e => handleSubmit(e)}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Đơn giá:</Form.Label>
+                            <Form.Label>Đơn giá bán:</Form.Label>
                             <Form.Control
                                 autoFocus
                                 type="number"
@@ -141,7 +141,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
                 </Col>
             </Row>
 
-            <Accordion>
+            <Accordion defaultActiveKey='0'>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Đơn giá nhập vào</Accordion.Header>
                     <Accordion.Body>
@@ -170,9 +170,10 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
                 show={show}
                 onHide={handleClose}
                 backdrop='static'
+                size='lg'
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Cập nhật đơn giá</Modal.Title>
+                    <Modal.Title>Cập nhật đơn giá bán</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

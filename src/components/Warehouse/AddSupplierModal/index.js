@@ -24,10 +24,10 @@ const AddSupplierModal = ({ setMessage, setSuppliers }) => {
         if (e) {
             e.preventDefault();
         }
-        if (name.length < 8 || address.length < 10) {
+        if (name.length < 8 || address.length < 6) {
             setIsInvalid({
                 name: name.length < 8,
-                address: address.length < 10
+                address: address.length < 6
             })
         } else {
             const submitData = { name, address }
@@ -82,7 +82,7 @@ const AddSupplierModal = ({ setMessage, setSuppliers }) => {
                     isInvalid={isInvalid.address}
                 />
                 <Form.Control.Feedback type="invalid">
-                    Địa chỉ phải có ít nhất 10 ký tự!
+                    Địa chỉ phải có ít nhất 6 ký tự!
                 </Form.Control.Feedback>
             </Form.Group>
         </Form>
