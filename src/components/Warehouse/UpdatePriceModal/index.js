@@ -101,7 +101,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
             </thead>
             <tbody>
                 {!loading && receivedNotes.map((note, index) => {
-                    const detail = note.products?.find(element => element.product === product._id);
+                    const detail = note.products?.find(element => element.product._id === product._id);
                     return (
                         <tr key={index}>
                             <td className='text-center'>{index + 1}</td>

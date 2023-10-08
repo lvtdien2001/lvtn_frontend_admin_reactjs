@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/vi';
-import { AddGoodsReceivedNoteModal } from '..';
+import { AddGoodsReceivedNoteModal, NoteDetailModal } from '..';
 
 const TableOfGoodsReceivedNote = ({ setMessage, formatPrice }) => {
     const [notes, setNotes] = useState([]);
@@ -35,7 +35,7 @@ const TableOfGoodsReceivedNote = ({ setMessage, formatPrice }) => {
                         {note.products?.length}
                     </td>
                     <td style={{ minWidth: '100px' }} className="text-center">
-                        Xem chi tiết
+                        <NoteDetailModal formatPrice={formatPrice} note={note} />
                     </td>
                 </tr>
             )
