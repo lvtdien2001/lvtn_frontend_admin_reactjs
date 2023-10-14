@@ -22,7 +22,7 @@ const TabBar = ({ tabs, setMessage }) => {
 
     return (
         <Row className='justify-content-center'>
-            <Col lg={10}>
+            <Col lg={10} className='bg-light'>
                 <Tabs
                     defaultActiveKey={tabs[0].key}
                     className="mb-3 mt-3"
