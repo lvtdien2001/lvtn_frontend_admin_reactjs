@@ -27,7 +27,12 @@ function PaginationApp({ page, lastPage, setPage, align }) {
                 disabled={Number(page) === 1}
             />
 
-            {body.map(e => e)}
+            {/* {body.map(e => e)} */}
+            {page > 2 && <Pagination.Ellipsis />}
+            {page > 1 && <Pagination.Item onClick={() => setPage(Number(page) - 1)} >{page - 1}</Pagination.Item>}
+            <Pagination.Item active>{page}</Pagination.Item>
+            {page < lastPage && <Pagination.Item onClick={() => setPage(Number(page) + 1)} >{page + 1}</Pagination.Item>}
+            {page < lastPage - 1 && <Pagination.Ellipsis />}
 
             <Pagination.Next
                 onClick={() => setPage(prev => Number(prev) + 1)}

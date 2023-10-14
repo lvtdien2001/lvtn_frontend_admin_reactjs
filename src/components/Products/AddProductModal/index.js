@@ -6,7 +6,7 @@ import styles from './AddProductModal.module.scss';
 
 const cx = classNames.bind(styles);
 
-const AddProductModal = ({ setProducts, setMessage, brands }) => {
+const AddProductModal = ({ setLoading, setMessage, brands, setReload }) => {
     const [show, setShow] = useState(false);
     const [file, setFile] = useState({});
     const [imgDemoUrl, setImgDemoUrl] = useState('');
@@ -70,13 +70,14 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
             formData.append('description', description);
             formData.append('gender', gender);
             try {
+                setLoading(true);
                 const rsp = await axios.post(`${process.env.REACT_APP_API_URL}/product`, formData);
                 if (rsp.data.success) {
                     setMessage({
                         type: 'success',
                         content: rsp.data.msg
                     });
-                    setProducts(prev => [...prev, rsp.data.newProduct])
+                    setReload(prev => !prev);
                 }
             } catch (error) {
                 setMessage({
@@ -149,9 +150,10 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
                         <div>
                             <Form.Check
                                 type='radio'
-                                label='Cả hai'
+                                label='Cặp đôi'
                                 name='gender'
                                 inline
+                                id='0'
                                 defaultChecked
                                 onChange={() => setSubmitData(prev => { return { ...prev, gender: 0 } })}
                             />
@@ -160,6 +162,7 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
                                 label='Nam'
                                 name='gender'
                                 inline
+                                id='1'
                                 onChange={() => setSubmitData(prev => { return { ...prev, gender: 1 } })}
                             />
                             <Form.Check
@@ -167,6 +170,7 @@ const AddProductModal = ({ setProducts, setMessage, brands }) => {
                                 label='Nữ'
                                 name='gender'
                                 inline
+                                id='2'
                                 onChange={() => setSubmitData(prev => { return { ...prev, gender: 2 } })}
                             />
                         </div>

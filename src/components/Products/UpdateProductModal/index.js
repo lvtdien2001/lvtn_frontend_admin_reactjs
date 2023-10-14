@@ -143,7 +143,7 @@ function UpdateProductModal({ product, setProducts, setMessage, brands }) {
                         <div>
                             <Form.Check
                                 type='radio'
-                                label='Cả hai'
+                                label='Cặp đôi'
                                 name='gender'
                                 inline
                                 defaultChecked={submitData.gender === 0}
@@ -238,7 +238,7 @@ function UpdateProductModal({ product, setProducts, setMessage, brands }) {
                     type="text"
                     placeholder="Nhập mô tả sản phẩm"
                     as='textarea'
-                    rows={3}
+                    rows={5}
                     name='description'
                     value={submitData.description}
                     onChange={e => handleChangeData(e)}
