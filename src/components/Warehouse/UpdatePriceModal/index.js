@@ -64,7 +64,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
         }
         getPrices();
         getReceivedNotes();
-    }, [page])
+    }, [page, product._id])
 
     let history = (
         <Table size="sm" responsive bordered hover>
@@ -120,7 +120,7 @@ const UpdatePriceModal = ({ setMessage, setProducts, product, formatPrice, index
             <h6>{product.name}</h6>
             <Row>
                 <Col className='text-center'>
-                    <img src={product.image.url} width='75px' height='75px' />
+                    <img alt='' src={product.image.url} width='75px' height='75px' />
                 </Col>
                 <Col>
                     <Form onSubmit={e => handleSubmit(e)}>

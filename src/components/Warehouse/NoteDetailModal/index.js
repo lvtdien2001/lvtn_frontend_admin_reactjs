@@ -9,7 +9,7 @@ const NoteDetailModal = ({ note, formatPrice }) => {
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        documentTitle: `DonHang${note.createdAt}`,
+        documentTitle: `PhieuNhapKho${note.createdAt}`,
         onAfterPrint: () => handleClose()
     })
 
