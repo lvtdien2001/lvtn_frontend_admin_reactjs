@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Button, Dropdown, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { GiExitDoor } from 'react-icons/gi';
 import { AuthContext, ModalContext } from '../../contexts';
 import styles from './NavBar.module.scss';
@@ -11,23 +11,51 @@ const cx = classNames.bind(styles);
 const NavBar = () => {
     const { logout } = useContext(AuthContext);
     const { showModal } = useContext(ModalContext);
+    const location = useLocation();
+
     const navClass = showModal ? '' : 'nav-fixed';
+
     let menu =
         <>
             <Link className={cx('text-link')} to='/product'>
-                <Dropdown.Item as={'div'}>Quản lý sản phẩm</Dropdown.Item>
+                <Dropdown.Item
+                    active={location.pathname === '/product'}
+                    as={'div'}
+                >
+                    Quản lý sản phẩm
+                </Dropdown.Item>
             </Link>
             <Link className={cx('text-link')} to='/order'>
-                <Dropdown.Item as={'div'}>Quản lý đơn hàng</Dropdown.Item>
+                <Dropdown.Item
+                    active={location.pathname === '/order'}
+                    as={'div'}
+                >
+                    Quản lý đơn hàng
+                </Dropdown.Item>
             </Link>
             <Link className={cx('text-link')} to='/warehouse'>
-                <Dropdown.Item as={'div'}>Quản lý kho hàng</Dropdown.Item>
+                <Dropdown.Item
+                    active={location.pathname === '/warehouse'}
+                    as={'div'}
+                >
+                    Quản lý kho hàng
+                </Dropdown.Item>
             </Link>
             <Link className={cx('text-link')} to='/user'>
-                <Dropdown.Item as={'div'}>Quản lý người dùng</Dropdown.Item>
+                <Dropdown.Item
+                    active={location.pathname === '/user'}
+                    as={'div'}
+                >
+                    Quản lý người dùng
+                </Dropdown.Item>
             </Link>
             <Link className={cx('text-link')} to='/sales'>
-                <Dropdown.Item as={'div'}>Thống kê doanh thu</Dropdown.Item>
+                <Dropdown.Item
+                    active={location.pathname === '/sales'}
+                    as={'div'}
+                >
+                    Thống kê doanh thu
+                </Dropdown.Item>
             </Link>
         </>
 
