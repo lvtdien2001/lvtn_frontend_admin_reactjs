@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavBar, TabBar, Message } from '../../components';
 import { TableOfGoodsReceivedNotes, TableOfSuppliers, TableOfInventories } from '../../components/Warehouse';
 
@@ -23,6 +23,8 @@ const Warehouse = () => {
             component: TableOfSuppliers
         }
     ]
+
+    useEffect(() => { document.title = 'Quản lý kho hàng' }, []);
 
     return (
         <>

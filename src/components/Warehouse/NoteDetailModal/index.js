@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button, Modal, Row, Col, Table } from 'react-bootstrap';
 import moment from 'moment';
+import { useReactToPrint } from 'react-to-print';
 
 const NoteDetailModal = ({ note, formatPrice }) => {
     const [show, setShow] = useState(false);
+    const ref = useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => ref.current,
+        documentTitle: `DonHang${note.createdAt}`,
+        onAfterPrint: () => handleClose()
+    })
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -38,8 +46,8 @@ const NoteDetailModal = ({ note, formatPrice }) => {
                                 <td>{product.product.name}</td>
                                 <td>{product.supplier.name}</td>
                                 <td className='text-center'>{product.quantity}</td>
-                                <td style={{ minWidth: '100px' }} className='text-center'>{formatPrice(product.price)}</td>
-                                <td style={{ minWidth: '120px' }} className='text-center'><b>{formatPrice(product.amount)}</b></td>
+                                <td style={{ minWidth: '90px' }} className='text-center'>{formatPrice(product.price)}</td>
+                                <td style={{ minWidth: '115px' }} className='text-center'><b>{formatPrice(product.amount)}</b></td>
                             </tr>
                         )
                     })}
@@ -80,12 +88,12 @@ const NoteDetailModal = ({ note, formatPrice }) => {
                     </Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
+                <Modal.Body className='p-3' ref={ref}>
                     {body}
                 </Modal.Body>
 
                 <Modal.Footer className='justify-content-center'>
-                    <Button variant="outline-success">
+                    <Button variant="outline-success" onClick={handlePrint}>
                         In phiếu nhập kho
                     </Button>
                     <Button variant="outline-secondary" onClick={handleClose}>
