@@ -43,6 +43,8 @@ const Order = () => {
         getOrders();
     }, [reload, filter])
 
+    useEffect(() => { document.title = 'Quản lý đơn hàng' }, []);
+
     return (
         <>
             <NavBar />

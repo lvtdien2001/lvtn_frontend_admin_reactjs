@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ListGroup, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { PrintOrder, CancelOrder } from '..';
 
 const OrdersList = ({ orders, formatPrice, setMessage, setReload }) => {
 
@@ -90,22 +91,28 @@ const OrdersList = ({ orders, formatPrice, setMessage, setReload }) => {
                             </ListGroup.Item>
 
                             <ListGroup.Item className='text-end'>
+                                <PrintOrder order={order} formatPrice={formatPrice} />
+
                                 {Number(order.status?.code) === 1 &&
-                                    <Button variant='success' onClick={() => handleConfirm(order)}>
+                                    <Button className='ms-2' variant='success' onClick={() => handleConfirm(order)}>
                                         Xác nhận
                                     </Button>
                                 }
 
                                 {Number(order.status?.code) === 2 &&
-                                    <Button variant='success' onClick={() => handleTransport(order)}>
+                                    <Button className='ms-2' variant='success' onClick={() => handleTransport(order)}>
                                         Đã vận chuyển
                                     </Button>
                                 }
 
                                 {Number(order.status?.code) === 3 &&
-                                    <Button variant='success' onClick={() => handleReceived(order)}>
+                                    <Button className='ms-2' variant='success' onClick={() => handleReceived(order)}>
                                         Đã nhận hàng
                                     </Button>
+                                }
+
+                                {Number(order.status?.code) < 4 &&
+                                    <CancelOrder order={order} setMessage={setMessage} setReload={setReload} />
                                 }
                             </ListGroup.Item>
                         </ListGroup>

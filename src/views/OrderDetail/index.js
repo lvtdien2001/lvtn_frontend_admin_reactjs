@@ -41,6 +41,8 @@ const OrderDetail = () => {
         getOrder();
     }, [id]);
 
+    useEffect(() => { document.title = 'Chi tiết đơn hàng' }, []);
+
     let status = (
         <>
             <Row className={`text-center ${cx('status')}`}>
