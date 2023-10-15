@@ -1,10 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts';
 import { Navigate } from 'react-router-dom';
 import { LoginForm } from '../../components';
 
 const Login = () => {
     const { authState: { authLoading, isAuthenticated } } = useContext(AuthContext);
+
+    useEffect(() => { document.title = 'Đăng nhập' }, []);
 
     let body;
     if (authLoading) {
@@ -16,6 +18,7 @@ const Login = () => {
     } else if (isAuthenticated) {
         return <Navigate to='/' />
     }
+
 
     return (
         <>
